@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const API_KEY = "AIzaSyAtIJNuqJsnifU3Ez3CNEtjUrhQWbB1N7o";
 const genAI = new GoogleGenerativeAI(API_KEY);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 export async function fetchCombination(element1: string, element2: string) {
   try {
