@@ -50,7 +50,7 @@ const ElementItem = ({
   return (
     <motion.div
       className={cn(
-        "bg-white rounded-md border shadow-sm hover:shadow-md transition-all cursor-grab active:cursor-grabbing",
+        "bg-white rounded-lg border shadow-sm hover:shadow-md transition-all cursor-grab active:cursor-grabbing flex items-center justify-center",
         sizeClasses[size],
         dragging && "opacity-50",
         isInPanel && "hover:bg-gray-50"
@@ -62,6 +62,9 @@ const ElementItem = ({
       onDragOver={(e) => e.preventDefault()}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.3 }}
     >
       <div className="flex items-center justify-center gap-2">
         <span className="text-xl">{element.emoji}</span>

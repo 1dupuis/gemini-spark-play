@@ -7,11 +7,23 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 export async function fetchCombination(element1: string, element2: string) {
   try {
-    const prompt = `I'm playing a game where I combine two elements to discover a new element. 
-    If I combine "${element1}" and "${element2}", what new element would I get? 
-    Be creative but logical. Return ONLY a JSON object with the format: 
-    {"result": "New Element Name", "emoji": "Single Emoji That Represents It"}. 
-    If there's no logical combination, return {"result": null, "emoji": null}`;
+    const prompt = `I'm playing a game called Infinite Craft where I combine two elements to discover a new element.
+    If I combine "${element1}" and "${element2}", what new element would I get?
+    
+    Rules:
+    - Be creative but logical in your combinations
+    - The result should be a single noun or simple concept
+    - Include a suitable emoji that represents the new element
+    - If the combination doesn't make sense, return null
+    
+    Return ONLY a JSON object with this exact format:
+    {
+      "result": "New Element Name",
+      "emoji": "Single Emoji",
+      "description": "A brief one-sentence description of this element"
+    }
+    
+    If there's no logical combination, return {"result": null, "emoji": null, "description": null}`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
@@ -30,17 +42,19 @@ export async function fetchCombination(element1: string, element2: string) {
         // Try to extract the result manually
         const nameMatch = text.match(/"result"\s*:\s*"([^"]+)"/);
         const emojiMatch = text.match(/"emoji"\s*:\s*"([^"]+)"/);
+        const descMatch = text.match(/"description"\s*:\s*"([^"]+)"/);
         
         if (nameMatch) {
           return {
             result: nameMatch[1],
             emoji: emojiMatch ? emojiMatch[1] : "✨",
+            description: descMatch ? descMatch[1] : `A combination of ${element1} and ${element2}`,
           };
         }
       }
     }
     
-    return { result: null, emoji: null };
+    return { result: null, emoji: null, description: null };
   } catch (error) {
     console.error("Error fetching combination:", error);
     throw error;

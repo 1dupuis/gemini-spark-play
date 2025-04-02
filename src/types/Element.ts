@@ -4,5 +4,7 @@ export interface Element {
   name: string;
   emoji: string;
   discovered: boolean;
+  description?: string;
+  category?: string;
   parents?: string[];
 }

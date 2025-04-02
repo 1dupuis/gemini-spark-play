@@ -64,20 +64,20 @@ const Workspace = ({
           variant="outline" 
           size="sm" 
           onClick={clearWorkspace}
-          className="bg-white/80 backdrop-blur-sm"
+          className="bg-white/80 backdrop-blur-sm hover:bg-red-50 hover:text-red-500"
         >
           <Trash2 className="w-4 h-4 mr-2" />
           Clear
         </Button>
       </div>
       
-      <div className="flex flex-wrap gap-4 mt-8">
+      <div className="flex flex-wrap gap-4 mt-12 justify-center">
         {elements.map((element, index) => (
           <motion.div
             key={`${element.id}-${index}`}
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.05 }}
           >
             <ElementItem 
               element={element} 

@@ -9,14 +9,13 @@ import { fetchCombination } from "@/lib/api";
 import useSound from "@/hooks/useSound";
 import StatusBar from "@/components/StatusBar";
 import { Toaster } from "@/components/ui/sonner";
+import { generateId } from "@/lib/utils";
 
 const baseElements: Element[] = [
-  { id: "water", name: "Water", emoji: "💧", discovered: true },
-  { id: "fire", name: "Fire", emoji: "🔥", discovered: true },
-  { id: "wind", name: "Wind", emoji: "💨", discovered: true },
-  { id: "earth", name: "Earth", emoji: "🌍", discovered: true },
-  { id: "steam", name: "Steam", emoji: "♨️", discovered: true },
-  { id: "mountain", name: "Mountain", emoji: "🏔️", discovered: true }
+  { id: "water", name: "Water", emoji: "💧", discovered: true, description: "A clear liquid essential for life" },
+  { id: "fire", name: "Fire", emoji: "🔥", discovered: true, description: "Heat and light from burning" },
+  { id: "wind", name: "Wind", emoji: "💨", discovered: true, description: "Moving air in the atmosphere" },
+  { id: "earth", name: "Earth", emoji: "🌍", discovered: true, description: "The ground beneath our feet" }
 ];
 
 const Index = () => {
@@ -24,7 +23,7 @@ const Index = () => {
   const [workspaceElements, setWorkspaceElements] = useState<Element[]>([]);
   const [isDragging, setIsDragging] = useState(false);
   const [draggedElement, setDraggedElement] = useState<Element | null>(null);
-  const [discoveryCount, setDiscoveryCount] = useState(6);
+  const [discoveryCount, setDiscoveryCount] = useState(baseElements.length);
   const [time, setTime] = useState(0);
   const [timerActive, setTimerActive] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -150,15 +149,17 @@ const Index = () => {
       if (result && result.result) {
         const newElementName = result.result;
         // Generate a unique ID from the name
-        const newElementId = newElementName.toLowerCase().replace(/\s+/g, "-");
+        const newElementId = generateId(newElementName);
         
         // Generate an emoji if one wasn't provided
         const newEmoji = result.emoji || "✨";
+        const description = result.description || `A combination of ${element1.name} and ${element2.name}`;
         
         const newElement: Element = {
           id: newElementId,
           name: newElementName,
           emoji: newEmoji,
+          description: description,
           discovered: true,
           parents: [combinationId]
         };
@@ -221,7 +222,7 @@ const Index = () => {
     setElements(baseElements);
     setWorkspaceElements([]);
     setTime(0);
-    setDiscoveryCount(6);
+    setDiscoveryCount(baseElements.length);
     toast({
       title: "Game Reset",
       description: "All your progress has been reset.",
